@@ -33,21 +33,33 @@ class Node:
 class Graph:
     @staticmethod
     def from_adjacency_matrix(matrix):
-        return Graph(matrix)
+        return Graph(matrix=matrix)
 
-    def __init__(self, matrix):
-        self.nodes = []
+    @staticmethod
+    def from_nodes(nodes):
+        return Graph(nodes=nodes)
 
-        for row_idx in range(len(matrix)):
-            node = Node.with_id(row_idx)
-            self.nodes.append(node)
+    def __init__(self, matrix=None, nodes=None):
+        if matrix != None and nodes != None:
+            raise TypeError('Cannot specify "matrix" and "nodes"')
 
-        for (row_idx, row) in enumerate(matrix):
-            node = self.find_node_by_id(row_idx)
-            for (edge_idx, edge) in enumerate(row):
-                if edge == 1:
-                    connection = self.find_node_by_id(edge_idx)
-                    node.add_connection(connection)
+        if matrix != None:
+            self.nodes = []
+
+            for row_idx in range(len(matrix)):
+                node = Node.with_id(row_idx)
+                self.nodes.append(node)
+
+            for (row_idx, row) in enumerate(matrix):
+                node = self.find_node_by_id(row_idx)
+                for (edge_idx, edge) in enumerate(row):
+                    if edge == 1:
+                        connection = self.find_node_by_id(edge_idx)
+                        node.add_connection(connection)
+        elif nodes != None:
+            self.nodes = list(nodes)
+        else:
+            raise TypeError('Must specify either "matrix" or "nodes"')
 
     def find_node_by_id(self, id):
         for node in self.nodes:
