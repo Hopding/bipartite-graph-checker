@@ -7,7 +7,8 @@ class NotBipartiteBecauseNotConnectedError(Exception):
 
 
 class NotBipartiteBecauseHasThreeCycleError(Exception):
-    pass
+    def __init__(self, cycle):
+        self.cycle = cycle
 
 
 def find_connected_components(graph):
@@ -20,7 +21,7 @@ def find_connected_components(graph):
 
     graph.breadth_first_search(visitor)
 
-    return map(Graph.from_nodes, components)
+    return list(map(Graph.from_nodes, components))
 
 
 def validate_is_bipartite(graph):
@@ -40,7 +41,7 @@ def validate_is_bipartite(graph):
 
     for cycle in all_cycles:
         if len(cycle) == 3:
-            raise NotBipartiteBecauseHasThreeCycleError()
+            raise NotBipartiteBecauseHasThreeCycleError(cycle)
 
 
 def find_bipartite_sets(graph):

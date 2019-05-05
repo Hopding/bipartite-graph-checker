@@ -3,7 +3,7 @@ import sys
 from utils import pretty_format_cycle
 from matrix import parse_adjacency_matrix
 from graph import Graph, node_ids
-from bipartite import find_connected_components, find_bipartite_sets
+from bipartite import find_connected_components, find_bipartite_sets, NotBipartiteBecauseHasThreeCycleError
 
 
 if len(sys.argv) < 2:
@@ -37,8 +37,20 @@ print()
 
 graph = Graph.from_adjacency_matrix(matrix)
 
-for subgraph in find_connected_components(graph):
-    (set1, set2) = find_bipartite_sets(subgraph)
-    print('SET1:', node_ids(set1))
-    print('SET2:', node_ids(set2))
+connected_components = find_connected_components(graph)
+print(f'Found {len(connected_components)} connected components.')
+print()
+
+for (idx, subgraph) in enumerate(connected_components):
+    print(f'Finding bipartite vertex sets in connected component {idx}...')
+    try:
+        (set1, set2) = find_bipartite_sets(subgraph)
+        print('Vertex Set 1:', node_ids(set1))
+        print('Vertex Set 2:', node_ids(set2))
+    except NotBipartiteBecauseHasThreeCycleError as e:
+        print(f'Connected component {idx} is not bipartite.')
+        print(f'Found cycle with length 3:')
+        print(' ', pretty_format_cycle(e.cycle))
     print()
+
+print('Done.')
