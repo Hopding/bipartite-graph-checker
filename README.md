@@ -1,6 +1,6 @@
-# UMSL CS5130 Project 2
+# UMSL CS5130 Project 3
 
-This program fulfills the requirements for CS5130 Project 2. It takes the adjacency matrix for an undirected graph as input, and outputs the graph's girth along with all cycles whose length is equal to the girth.
+This program fulfills the requirements for CS5130 Project 3. It takes the adjacency matrix for an undirected graph as input. It outputs, for each connected component in the graph, the two bipartite vertex sets, or the first three-cycle it encounters.
 
 ## Program Outline
 
@@ -15,9 +15,10 @@ When processing an input file, the following steps are performed:
    - **Undirected Graph** - The adjacency matrix must be symmetric over the diagonal (from top left to bottom right).
    - **At Least 1 Cycle** - The matrix must contain at least one cycle.
 
-3. **Find all Cycles** - The matrix is converted into a graph. All cycles in this graph are identified via a modified version of breadth first search.
-4. **Find the Girth** - The length of the shortest cycles in the graph are identified. This is the Girth.
-5. **Output Results** - The girth is output to the console, along with all cycles whose length is equal to the girth.
+3. **Find all Connected Components** - The matrix is converted into a graph. Each connected component in this graph is identified.
+4. **Bipartite Validation** - Each connected component is validated to ensure it is bipartite. If a component is found to have at least one cycle of length 3, it is not bipartite.
+5. **Find Vertex Sets** - Each bipartite component is processed to split it vertices into two disjoint and independent sets.
+6. **Output Results** - For each connected component, one of two things is output, depending on whether or not it is bipartite. If the component is bipartite, its two vertex sets are printed to the console. Otherwise, the first cycle of length 3 is printed.
 
 ## Requirements
 
@@ -27,11 +28,11 @@ To run this program, you must have Python 3.7 installed on your machine. Older a
 
 - You can use the included `run` script:
   ```
-  ./run data/test8.matrix
+  ./run data/test11.matrix
   ```
 - Alternatively, you can run the `main.py` script directly:
   ```
-  python3.7 src/main.py data/test8.matrix
+  python3.7 src/main.py data/test11.matrix
   ```
 
 ## Unit Tests
@@ -45,6 +46,7 @@ To run this program, you must have Python 3.7 installed on your machine. Older a
   python3.7 src/test_adjacency_matrix.py
   python3.7 src/test_graph.py
   python3.7 src/test_cycles.py
+  python3.7 src/test_bipartite.py
   ```
 
 ## Output For `data/*.matrix` Files
@@ -66,9 +68,13 @@ Validating matrix is square...
 Validating matrix contains no self loops...
 Validating matrix is symmetric...
 
-Finding all cycles in graph...
-Graph contains no cycles.
-Exiting.
+Found 1 connected components.
+
+Finding bipartite vertex sets in connected component 0...
+Vertex Set 1: [1]
+Vertex Set 2: [0, 2]
+
+Done.
 ```
 
 ```
@@ -191,21 +197,14 @@ Validating matrix is square...
 Validating matrix contains no self loops...
 Validating matrix is symmetric...
 
-Finding all cycles in graph...
-• Found cycle: 5 -> 6 -> 2 -> 5
-• Found cycle: 5 -> 2 -> 6 -> 5
-• Found cycle: 2 -> 3 -> 6 -> 2
-• Found cycle: 5 -> 6 -> 3 -> 2 -> 5
-• Found cycle: 5 -> 6 -> 7 -> 3 -> 2 -> 5
-• Found cycle: 5 -> 2 -> 3 -> 7 -> 6 -> 5
+Found 1 connected components.
 
-Finding girth of graph...
-• Found girth: 3
+Finding bipartite vertex sets in connected component 0...
+Connected component 0 is not bipartite.
+Found cycle with length 3:
+  5 -> 6 -> 2 -> 5
 
-Finding all cycles whose length equals the girth...
-• Found girth cycle: 5 -> 6 -> 2 -> 5
-• Found girth cycle: 5 -> 2 -> 6 -> 5
-• Found girth cycle: 2 -> 3 -> 6 -> 2
+Done.
 ```
 
 ```
@@ -227,20 +226,14 @@ Validating matrix is square...
 Validating matrix contains no self loops...
 Validating matrix is symmetric...
 
-Finding all cycles in graph...
-• Found cycle: 0 -> 3 -> 1 -> 0
-• Found cycle: 0 -> 1 -> 3 -> 0
-• Found cycle: 1 -> 4 -> 2 -> 1
-• Found cycle: 1 -> 2 -> 4 -> 1
+Found 1 connected components.
 
-Finding girth of graph...
-• Found girth: 3
+Finding bipartite vertex sets in connected component 0...
+Connected component 0 is not bipartite.
+Found cycle with length 3:
+  0 -> 3 -> 1 -> 0
 
-Finding all cycles whose length equals the girth...
-• Found girth cycle: 0 -> 3 -> 1 -> 0
-• Found girth cycle: 0 -> 1 -> 3 -> 0
-• Found girth cycle: 1 -> 4 -> 2 -> 1
-• Found girth cycle: 1 -> 2 -> 4 -> 1
+Done.
 ```
 
 ```
@@ -264,20 +257,81 @@ Validating matrix is square...
 Validating matrix contains no self loops...
 Validating matrix is symmetric...
 
-Finding all cycles in graph...
-• Found cycle: 1 -> 2 -> 6 -> 3 -> 1
-• Found cycle: 1 -> 3 -> 6 -> 2 -> 1
-• Found cycle: 0 -> 6 -> 2 -> 1 -> 0
-• Found cycle: 1 -> 3 -> 2 -> 1
-• Found cycle: 0 -> 6 -> 3 -> 1 -> 0
-• Found cycle: 1 -> 2 -> 3 -> 4 -> 1
-• Found cycle: 1 -> 4 -> 3 -> 2 -> 1
-• Found cycle: 1 -> 3 -> 4 -> 1
+Found 1 connected components.
 
-Finding girth of graph...
-• Found girth: 3
+Finding bipartite vertex sets in connected component 0...
+Connected component 0 is not bipartite.
+Found cycle with length 3:
+  1 -> 3 -> 2 -> 1
 
-Finding all cycles whose length equals the girth...
-• Found girth cycle: 1 -> 3 -> 2 -> 1
-• Found girth cycle: 1 -> 3 -> 4 -> 1
+Done.
+```
+
+```
+$ ./run data/test10.matrix
+Reading input file: data/test10.matrix
+
+Using the following input data as Adjacency Matrix:
+-----------------
+0 0 0 0 0 1 0 0 0
+0 0 0 0 0 1 1 0 0
+0 0 0 0 0 0 0 1 1
+0 0 0 0 0 0 1 0 0
+0 0 0 0 0 1 0 0 1
+1 1 0 0 1 0 0 0 0
+0 1 0 1 0 0 0 0 0
+0 0 1 0 0 0 0 0 0
+0 0 1 0 1 0 0 0 0
+-----------------
+
+Parsing matrix...
+Validating matrix cells are 0 or 1...
+Validating matrix is square...
+Validating matrix contains no self loops...
+Validating matrix is symmetric...
+
+Found 1 connected components.
+
+Finding bipartite vertex sets in connected component 0...
+Vertex Set 1: [1, 2, 0, 4, 3]
+Vertex Set 2: [7, 5, 6, 8]
+
+Done.
+```
+
+```
+$ ./run data/test11.matrix
+Reading input file: data/test11.matrix
+
+Using the following input data as Adjacency Matrix:
+-----------------
+0 0 0 0 0 1 0 0 0
+0 0 0 0 0 1 1 0 0
+0 0 0 0 0 0 1 1 0
+0 0 0 0 1 0 0 0 1
+0 0 0 1 0 0 0 0 1
+1 1 0 0 0 0 0 0 0
+0 1 1 0 0 0 0 0 0
+0 0 1 0 0 0 0 0 0
+0 0 0 1 1 0 0 0 0
+-----------------
+
+Parsing matrix...
+Validating matrix cells are 0 or 1...
+Validating matrix is square...
+Validating matrix contains no self loops...
+Validating matrix is symmetric...
+
+Found 2 connected components.
+
+Finding bipartite vertex sets in connected component 0...
+Vertex Set 1: [0, 2, 1]
+Vertex Set 2: [7, 5, 6]
+
+Finding bipartite vertex sets in connected component 1...
+Connected component 1 is not bipartite.
+Found cycle with length 3:
+  3 -> 8 -> 4 -> 3
+
+Done.
 ```
