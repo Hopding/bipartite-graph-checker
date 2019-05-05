@@ -13,7 +13,6 @@ When processing an input file, the following steps are performed:
    - **Bit Value Entries** - Each cell in the matrix must be `0` or `1`.
    - **No Self-Loops** - The diagonal cells (from top left to bottom right) must all be `0`.
    - **Undirected Graph** - The adjacency matrix must be symmetric over the diagonal (from top left to bottom right).
-   - **At Least 1 Cycle** - The matrix must contain at least one cycle.
 
 3. **Find all Connected Components** - The matrix is converted into a graph. Each connected component in this graph is identified.
 4. **Bipartite Validation** - Each connected component is validated to ensure it is bipartite. If a component is found to have at least one cycle of length 3, it is not bipartite.
