@@ -1,6 +1,9 @@
 from utils import safe_get
 
 
+def node_ids(nodes): return list(map(lambda node: node.id, nodes))
+
+
 class Node:
     @staticmethod
     def with_id(id):

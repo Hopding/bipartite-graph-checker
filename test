@@ -16,3 +16,7 @@ echo
 file="src/test_cycles.py"
 echo "• ${bold}RUNNING${normal} $file"
 python3.7 $file
+
+file="src/test_bipartite.py"
+echo "• ${bold}RUNNING${normal} $file"
+python3.7 $file

@@ -41,3 +41,20 @@ def validate_is_bipartite(graph):
     for cycle in all_cycles:
         if len(cycle) == 3:
             raise NotBipartiteBecauseHasThreeCycleError()
+
+
+def find_bipartite_sets(graph):
+    validate_is_bipartite(graph)
+    set1 = set()
+    set2 = set()
+
+    def visitor(node, parents):
+        is_even_distance_from_root = len(parents) % 2 == 0
+        target_set = set1 if is_even_distance_from_root else set2
+        target_set.add(node)
+
+    graph.breadth_first_search(visitor)
+
+    assert len(set1) + \
+        len(set2) == len(graph.nodes), 'Incomplete bipartite sets!'
+    return (set1, set2)

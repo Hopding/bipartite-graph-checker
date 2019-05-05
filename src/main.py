@@ -2,9 +2,9 @@ import sys
 
 from utils import pretty_format_cycle
 from matrix import parse_adjacency_matrix
-from graph import Graph
+from graph import Graph, node_ids
 from cycles import find_all_cycles
-from bipartite import find_connected_components, validate_is_bipartite
+from bipartite import find_connected_components, validate_is_bipartite, find_bipartite_sets
 
 
 # # Visualization:
@@ -58,9 +58,9 @@ graph = Graph.from_adjacency_matrix(matrix)
 connected_components = find_connected_components(graph)
 
 for subgraph in connected_components:
-    print('COMPONENTS:')
-    print(subgraph.nodes)
-    validate_is_bipartite(subgraph)
+    (set1, set2) = find_bipartite_sets(subgraph)
+    print('SET1:', node_ids(set1))
+    print('SET2:', node_ids(set2))
     print()
 
 # if len(sys.argv) < 2:
