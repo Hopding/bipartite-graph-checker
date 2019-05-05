@@ -1,6 +1,6 @@
-# UMSL CS5130 Project 3
+# Bipartite Graph Checker
 
-This program fulfills the requirements for CS5130 Project 3. It takes the adjacency matrix for an undirected graph as input. It outputs, for each connected component in the graph, the two bipartite vertex sets, or the first three-cycle it encounters.
+This program takes the adjacency matrix for an undirected graph as input. It outputs, for each connected component in the graph, the two bipartite vertex sets, or the first three-cycle it encounters.
 
 ## Program Outline
 
@@ -16,7 +16,7 @@ When processing an input file, the following steps are performed:
 
 3. **Find all Connected Components** - The matrix is converted into a graph. Each connected component in this graph is identified.
 4. **Bipartite Validation** - Each connected component is validated to ensure it is bipartite. If a component is found to have at least one cycle of length 3, it is not bipartite.
-5. **Find Vertex Sets** - Each bipartite component is processed to split it vertices into two disjoint and independent sets.
+5. **Find Vertex Sets** - Each bipartite component is processed to split its vertices into two disjoint and independent sets.
 6. **Output Results** - For each connected component, one of two things is output, depending on whether or not it is bipartite. If the component is bipartite, its two vertex sets are printed to the console. Otherwise, the first cycle of length 3 is printed.
 
 ## Requirements
